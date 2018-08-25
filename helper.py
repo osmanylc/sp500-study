@@ -10,6 +10,7 @@ class Col(Enum):
     DIVIDEND = 3
     EARNINGS = 4
     LOG_RETURNS = 5
+    RETURNS = 6
 
 
 def get_sp500_df(filename):
@@ -30,8 +31,24 @@ def get_sp500_df(filename):
 
 
 def get_log_returns(prices_srs):
+    """
+    Calculate log returns of prices series given.
+
+    :param prices_srs: Series of prices. 
+    """
     log_prices_srs = np.log(prices_srs)
-    log_returns_srs = log_prices_srs.diff().rename(Col.LOG_RETURNS.name)
+    log_returns_srs = (log_prices_srs
+                       .diff()
+                       .shift(-1)
+                       .rename(Col.LOG_RETURNS.name))
 
     return log_returns_srs
+
+def get_returns(prices_srs):
+    """
+    Calculates the returns defined as X_i = P_{i+1} / P_i
+    """
+    returns_srs = ((prices_srs.shift(-1) / prices_srs)
+                   .rename(Col.RETURNS.name))
+    return returns_srs
 
