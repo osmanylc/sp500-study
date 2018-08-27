@@ -52,3 +52,11 @@ def get_returns(prices_srs):
                    .rename(Col.RETURNS.name))
     return returns_srs
 
+def get_pct_dividends(div_srs, price_series):
+    """
+    Calculates the percent of the price that the dividend 
+    paid out represents.
+    """
+    pct_div_srs = div_srs / prices_srs
+    return pct_div_srs
+
